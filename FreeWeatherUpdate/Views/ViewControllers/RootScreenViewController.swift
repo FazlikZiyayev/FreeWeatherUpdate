@@ -23,6 +23,15 @@ class RootScreenViewController: UIViewController {
         return label
     }()
     
+    private lazy var currentWeatherLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 32)
+        
+        return label
+    }()
+    
     
     
     override func viewDidLoad() {
@@ -41,13 +50,14 @@ class RootScreenViewController: UIViewController {
     
     
     
-    func bind_components() {
-        bind_currentWeatherPublisher()
+    func setup_uiComponents() {
+        setup_countryNameLabel()
+        setup_currentWeatherLabel()
     }
     
     
-    func setup_uiComponents() {
-        setup_countryNameLabel()
+    func bind_components() {
+        bind_currentWeatherPublisher()
     }
     
     
@@ -58,7 +68,8 @@ class RootScreenViewController: UIViewController {
             .sink { completion in
             } receiveValue: { [weak self] weather in
                 if let safeWeather = weather {
-                    self?.countryNameLabel.text = weather?.name
+                    self?.countryNameLabel.text = safeWeather.name
+                    self?.currentWeatherLabel.text = "\(Int(safeWeather.main.temp))°C"
                 }
             }
             .store(in: &cancellables)
@@ -74,6 +85,17 @@ extension RootScreenViewController {
             countryNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             countryNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                                  constant: 30)
+        ])
+    }
+    
+    
+    func setup_currentWeatherLabel() {
+        view.addSubview(currentWeatherLabel)
+        
+        NSLayoutConstraint.activate([
+            currentWeatherLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            currentWeatherLabel.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor,
+                                                     constant: 20)
         ])
     }
 }
