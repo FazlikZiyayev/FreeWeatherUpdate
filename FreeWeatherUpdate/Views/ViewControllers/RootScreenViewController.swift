@@ -27,7 +27,7 @@ class RootScreenViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.white
-        label.font = UIFont.boldSystemFont(ofSize: 32)
+        label.font = UIFont.systemFont(ofSize: 92)
         
         return label
     }()
@@ -68,8 +68,8 @@ class RootScreenViewController: UIViewController {
             .sink { completion in
             } receiveValue: { [weak self] weather in
                 if let safeWeather = weather {
-                    self?.countryNameLabel.text = safeWeather.name
-                    self?.currentWeatherLabel.text = "\(Int(safeWeather.main.temp))°C"
+                    self?.countryNameLabel.text = safeWeather.location.cityName
+                    self?.currentWeatherLabel.text = "\(Int(safeWeather.current.currentTempC))°"
                 }
             }
             .store(in: &cancellables)
@@ -95,7 +95,7 @@ extension RootScreenViewController {
         NSLayoutConstraint.activate([
             currentWeatherLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             currentWeatherLabel.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor,
-                                                     constant: 20)
+                                                     constant: 30)
         ])
     }
 }

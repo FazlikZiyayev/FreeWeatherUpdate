@@ -9,9 +9,9 @@ import Foundation
 import Combine
 
 
+// Here we can use Observer design pattern
 protocol RootScreenViewModelProtocol {
-    var data: CurrentWeather? { get set }
-    
+  
     var currentWeather: CurrentWeather? { get }
     var currentWeatherPublisher: Published<CurrentWeather?>.Publisher { get }
     
@@ -21,8 +21,6 @@ protocol RootScreenViewModelProtocol {
 
 
 class RootScreenViewModel: RootScreenViewModelProtocol {
-    var data: CurrentWeather?
-    
     var cancellables = Set<AnyCancellable>()
     
     @Published var currentWeather: CurrentWeather? = nil
