@@ -38,16 +38,36 @@ struct Current: Codable {
 
 struct ForecastDay: Codable {
     var date: String
-    var days: [Day]
+    var day: Day
+    var hours: Day
     
     enum CodingKeys: String, CodingKey {
         case date = "date"
-        case days = "day"
+        case day = "day"
+        case hours = "hour"
     }
 }
 
 
 struct Day: Codable {
+    var maxTempC: Double
+    var avgTempC: Double
+    var minTempC: Double
     
+    enum CodingKeys: String, CodingKey {
+        case maxTempC = "maxtemp_c"
+        case avgTempC = "avgtemp_c"
+        case minTempC = "mintemp_c"
+    }
 }
 
+
+struct Hour: Codable {
+    var time: String
+    var currentTempC: Double
+    
+    enum CodingKeys: String, CodingKey {
+        case time = "time"
+        case currentTempC = "temp_c"
+    }
+}
