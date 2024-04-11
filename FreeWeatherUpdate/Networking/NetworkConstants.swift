@@ -11,8 +11,8 @@ import Foundation
 class NetworkConstants {
     static let shared = NetworkConstants()
     
-    let apiKey = "242847f9f1ebe60a82f970bbbe512e52"
-    let baseUrl = "https://api.openweathermap.org"
+    let apiKey = "515ba21b6d7e4d459be112150241004"
+    let baseUrl = "http://api.weatherapi.com/v1"
     
     private init () {}
 }

@@ -40,7 +40,7 @@ class RootScreenViewController: UIViewController {
         setup_uiComponents()
         bind_components()
         
-        model.fetch_currentWeather()
+        model.fetch_forecastWeather()
     }
     
     
@@ -58,6 +58,7 @@ class RootScreenViewController: UIViewController {
     
     func bind_components() {
         bind_currentWeatherPublisher()
+        bind_currentForecastPublisher()
     }
     
     
@@ -70,6 +71,19 @@ class RootScreenViewController: UIViewController {
                 if let safeWeather = weather {
                     self?.countryNameLabel.text = safeWeather.location.cityName
                     self?.currentWeatherLabel.text = "\(Int(safeWeather.current.currentTempC))°"
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    
+    func bind_currentForecastPublisher() {
+        model.currentForecastPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] forecast in
+                if let safeForecast = forecast {
+                    self?.countryNameLabel.text = safeForecast.location.cityName
+                    self?.currentWeatherLabel.text = "\(Int(safeForecast.current.currentTempC))°"
                 }
             }
             .store(in: &cancellables)

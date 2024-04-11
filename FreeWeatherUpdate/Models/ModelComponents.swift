@@ -36,10 +36,19 @@ struct Current: Codable {
 }
 
 
+struct Forecast: Codable {
+    var forecastDays: [ForecastDay]
+    
+    enum CodingKeys: String, CodingKey {
+        case forecastDays = "forecastday"
+    }
+}
+
+
 struct ForecastDay: Codable {
     var date: String
     var day: Day
-    var hours: Day
+    var hours: [Hour]
     
     enum CodingKeys: String, CodingKey {
         case date = "date"

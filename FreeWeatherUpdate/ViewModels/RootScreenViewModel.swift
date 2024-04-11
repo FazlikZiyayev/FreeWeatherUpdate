@@ -15,7 +15,11 @@ protocol RootScreenViewModelProtocol {
     var currentWeather: CurrentWeather? { get }
     var currentWeatherPublisher: Published<CurrentWeather?>.Publisher { get }
     
+    var currentForecast: CurrentForecast? { get }
+    var currentForecastPublisher: Published<CurrentForecast?>.Publisher { get }
+    
     func fetch_currentWeather()
+    func fetch_forecastWeather()
 }
 
 
@@ -24,11 +28,14 @@ class RootScreenViewModel: RootScreenViewModelProtocol {
     var cancellables = Set<AnyCancellable>()
     
     @Published var currentWeather: CurrentWeather? = nil
+    @Published var currentForecast: CurrentForecast? = nil
+
     var currentWeatherPublisher: Published<CurrentWeather?>.Publisher { $currentWeather }
+    var currentForecastPublisher: Published<CurrentForecast?>.Publisher { $currentForecast }
     
     
     func fetch_currentWeather() {
-        let urlStr = "\(NetworkConstants.shared.baseUrl)/data/2.5/weather?q=Uzbekistan&appid=\(NetworkConstants.shared.apiKey)&units=metric"
+        let urlStr = "\(NetworkConstants.shared.baseUrl)/current.json?key=\(NetworkConstants.shared.apiKey)&q=Uzbekistan"
         guard let safeUrl = URL(string: urlStr) else { return }
         
         let session = URLSession.shared
@@ -50,10 +57,10 @@ class RootScreenViewModel: RootScreenViewModelProtocol {
                 receiveCompletion: { status in
                     switch status {
                     case .finished:
-                        print("Completed")
+                        print("Finished: fetch_currentWeather")
                         break
-                    case .failure(let error):
-                        print("Receiver error \(error)")
+                    case .failure(_):
+                        print("Failed: fetch_currentWeather")
                         break
                     }
                 },
@@ -63,5 +70,43 @@ class RootScreenViewModel: RootScreenViewModelProtocol {
                 }
             )
             .store(in: &cancellables)
+    }
+    
+    
+    
+    func fetch_forecastWeather() {
+        let urlStr = "\(NetworkConstants.shared.baseUrl)/forecast.json?key=\(NetworkConstants.shared.apiKey)&q=Uzbekistan"
+        guard let safeUrl = URL(string: urlStr) else { return }
+        
+        let session = URLSession.shared
+        
+        session.dataTaskPublisher(for: safeUrl)
+            .tryMap { (data: Data, response: URLResponse) -> Data in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else
+                {
+                          throw URLError(.badServerResponse)
+                }
+                
+                return data
+            }
+            .receive(on: DispatchQueue.global())
+            .decode(type: CurrentForecast.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    print("Finished: fetch_forecastWeather")
+                    break
+                case .failure(_):
+                    print("Failed: fetch_forecastWeather")
+                    break
+                }
+            } receiveValue: { [weak self] forecast in
+                self?.currentForecast = forecast
+            }
+            .store(in: &cancellables)
+
+        
     }
 }
