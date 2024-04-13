@@ -37,8 +37,8 @@ class RootScreenViewController: UIViewController {
     
     private lazy var forecastTB: UITableView = {
         let tb = UITableView()
-        tb.backgroundColor = UIColor.clear
         tb.translatesAutoresizingMaskIntoConstraints = false
+        tb.backgroundColor = UIColor.clear
         tb.delegate = self
         tb.dataSource = self
         tb.register(ForecastCell.self, forCellReuseIdentifier: "ForecastCellIdentifier")
@@ -47,7 +47,7 @@ class RootScreenViewController: UIViewController {
     }()
     
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,6 +60,8 @@ class RootScreenViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.view.backgroundColor = .black
     }
     
     
@@ -112,6 +114,14 @@ extension RootScreenViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let safeForecast = model.currentForecast
+        {
+            let vc = SingleConditionViewController()
+            vc.setCurrentForecast(forecast: safeForecast)
+            
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     
@@ -131,7 +141,7 @@ extension RootScreenViewController: UITableViewDelegate, UITableViewDataSource {
             if let safeForecast = model.currentForecast
             {
                 let str = safeForecast.forecast.forecastDays[indexPath.row].date
-                cell.configure(withTitle: str)
+                cell.configure(withTitle: dayOfWeek(from: str) ?? str)
             }
             
             return cell
@@ -175,5 +185,28 @@ extension RootScreenViewController {
             forecastTB.rightAnchor.constraint(equalTo: view.rightAnchor),
             forecastTB.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor)
         ])
+    }
+}
+
+
+extension RootScreenViewController {
+    
+    func dayOfWeek(from dateString: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        guard let date = dateFormatter.date(from: dateString) else {
+            return nil
+        }
+        
+        let calendar = Calendar.current
+        
+        if calendar.isDateInToday(date) {
+            return "Today"
+        } else {
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            return dayFormatter.string(from: date)
+        }
     }
 }

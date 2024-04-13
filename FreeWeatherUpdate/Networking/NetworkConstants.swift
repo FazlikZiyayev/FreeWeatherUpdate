@@ -8,8 +8,8 @@
 import Foundation
 
 
-class NetworkConstants {
-    static let shared = NetworkConstants()
+public class NetworkConstants {
+    public static let shared = NetworkConstants()
     
     let apiKey = "515ba21b6d7e4d459be112150241004"
     let baseUrl = "http://api.weatherapi.com/v1"
