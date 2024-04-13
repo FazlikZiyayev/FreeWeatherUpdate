@@ -14,6 +14,7 @@ class RootScreenViewController: UIViewController {
     let model: RootScreenViewModelProtocol = RootScreenViewModel()
     private var cancellables = Set<AnyCancellable>()
     
+    
     private lazy var countryNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -23,6 +24,7 @@ class RootScreenViewController: UIViewController {
         return label
     }()
     
+    
     private lazy var currentWeatherLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,6 +32,18 @@ class RootScreenViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 92)
         
         return label
+    }()
+    
+    
+    private lazy var forecastTB: UITableView = {
+        let tb = UITableView()
+        tb.backgroundColor = UIColor.clear
+        tb.translatesAutoresizingMaskIntoConstraints = false
+        tb.delegate = self
+        tb.dataSource = self
+        tb.register(ForecastCell.self, forCellReuseIdentifier: "ForecastCellIdentifier")
+        
+        return tb
     }()
     
     
@@ -53,6 +67,7 @@ class RootScreenViewController: UIViewController {
     func setup_uiComponents() {
         setup_countryNameLabel()
         setup_currentWeatherLabel()
+        setup_forecastTB()
     }
     
     
@@ -84,9 +99,45 @@ class RootScreenViewController: UIViewController {
                 if let safeForecast = forecast {
                     self?.countryNameLabel.text = safeForecast.location.cityName
                     self?.currentWeatherLabel.text = "\(Int(safeForecast.current.currentTempC))°"
+                    
+                    self?.forecastTB.reloadData()
                 }
             }
             .store(in: &cancellables)
+    }
+}
+
+
+extension RootScreenViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return model.currentForecast?.forecast.forecastDays.count ?? 0
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastCellIdentifier",
+                                                    for: indexPath) as? ForecastCell {
+            if let safeForecast = model.currentForecast
+            {
+                let str = safeForecast.forecast.forecastDays[indexPath.row].date
+                cell.configure(withTitle: str)
+            }
+            
+            return cell
+        }
+        
+        return UITableViewCell()
     }
 }
 
@@ -110,6 +161,19 @@ extension RootScreenViewController {
             currentWeatherLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             currentWeatherLabel.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor,
                                                      constant: 30)
+        ])
+    }
+    
+    
+    func setup_forecastTB() {
+        view.addSubview(forecastTB)
+        
+        NSLayoutConstraint.activate([
+            forecastTB.topAnchor.constraint(equalTo: currentWeatherLabel.bottomAnchor,
+                                            constant: 20),
+            forecastTB.leftAnchor.constraint(equalTo: view.leftAnchor),
+            forecastTB.rightAnchor.constraint(equalTo: view.rightAnchor),
+            forecastTB.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor)
         ])
     }
 }

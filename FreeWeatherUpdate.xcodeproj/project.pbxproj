@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F41CA7172BC6F2460009B058 /* ModelComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41CA7162BC6F2460009B058 /* ModelComponents.swift */; };
 		F41CA7192BC6F2700009B058 /* CurrentForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41CA7182BC6F2700009B058 /* CurrentForecast.swift */; };
+		F41CA71B2BC964760009B058 /* ForecastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41CA71A2BC964760009B058 /* ForecastCell.swift */; };
 		F4FA002D2BBBFE5A0072D756 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FA002C2BBBFE5A0072D756 /* AppDelegate.swift */; };
 		F4FA002F2BBBFE5A0072D756 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FA002E2BBBFE5A0072D756 /* SceneDelegate.swift */; };
 		F4FA00362BBBFE5B0072D756 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4FA00352BBBFE5B0072D756 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		F41CA7162BC6F2460009B058 /* ModelComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelComponents.swift; sourceTree = "<group>"; };
 		F41CA7182BC6F2700009B058 /* CurrentForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentForecast.swift; sourceTree = "<group>"; };
+		F41CA71A2BC964760009B058 /* ForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCell.swift; sourceTree = "<group>"; };
 		F4FA00292BBBFE5A0072D756 /* FreeWeatherUpdate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FreeWeatherUpdate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4FA002C2BBBFE5A0072D756 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4FA002E2BBBFE5A0072D756 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		F4FA00482BBC03E20072D756 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				F41CA71A2BC964760009B058 /* ForecastCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				F4FA00472BBC02EB0072D756 /* NetworkConstants.swift in Sources */,
 				F41CA7192BC6F2700009B058 /* CurrentForecast.swift in Sources */,
 				F4FA002D2BBBFE5A0072D756 /* AppDelegate.swift in Sources */,
+				F41CA71B2BC964760009B058 /* ForecastCell.swift in Sources */,
 				F4FA004D2BBC044B0072D756 /* RootScreenViewModel.swift in Sources */,
 				F41CA7172BC6F2460009B058 /* ModelComponents.swift in Sources */,
 				F4FA004F2BBC05020072D756 /* CurrentWeather.swift in Sources */,

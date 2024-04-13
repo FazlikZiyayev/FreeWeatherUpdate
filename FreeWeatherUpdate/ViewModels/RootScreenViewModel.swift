@@ -75,7 +75,7 @@ class RootScreenViewModel: RootScreenViewModelProtocol {
     
     
     func fetch_forecastWeather() {
-        let urlStr = "\(NetworkConstants.shared.baseUrl)/forecast.json?key=\(NetworkConstants.shared.apiKey)&q=Uzbekistan"
+        let urlStr = "\(NetworkConstants.shared.baseUrl)/forecast.json?key=\(NetworkConstants.shared.apiKey)&q=Uzbekistan&days=10"
         guard let safeUrl = URL(string: urlStr) else { return }
         
         let session = URLSession.shared
