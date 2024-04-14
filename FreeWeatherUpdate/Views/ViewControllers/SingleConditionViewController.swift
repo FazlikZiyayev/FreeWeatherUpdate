@@ -104,12 +104,15 @@ extension SingleConditionViewController {
         guard let safeForecast = model.currentForecast else { return }
         
         let titleLabel = UILabel()
-        titleLabel.text = "\(dayOfWeek(from: safeForecast.date) ?? "")"
+//        titleLabel.text = "\(dayOfWeek(from: safeForecast.date) ?? "")"
+        titleLabel.text = "Hello"
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.sizeToFit()
         
         navigationController?.navigationItem.titleView = titleLabel
+        
+        title = "Heeee"
     }
     
     
