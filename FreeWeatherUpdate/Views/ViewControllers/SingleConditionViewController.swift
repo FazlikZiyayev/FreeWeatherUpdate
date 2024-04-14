@@ -18,7 +18,7 @@ class SingleConditionViewController: UIViewController {
     private lazy var conditionTB: UITableView = {
         let tb = UITableView()
         tb.translatesAutoresizingMaskIntoConstraints = false
-        tb.backgroundColor = UIColor.black
+        tb.backgroundColor = UIColor.clear
         tb.delegate = self
         tb.dataSource = self
         tb.register(ForecastCell.self, forCellReuseIdentifier: "ForecastCellIdentifier")
@@ -27,21 +27,11 @@ class SingleConditionViewController: UIViewController {
     }()
     
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.view.backgroundColor = .black
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        
-        guard let safeForecast = model.currentForecast else { return }
-        let titleLabel = UILabel()
-        titleLabel.text = "\(dayOfWeek(from: safeForecast.date) ?? "")"
-        titleLabel.textColor = UIColor.white
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        titleLabel.sizeToFit()
-        
-        navigationItem.titleView = titleLabel
+        setup_view()
+        setup_navigationBar()
     }
     
     
@@ -103,6 +93,31 @@ extension SingleConditionViewController: UITableViewDelegate, UITableViewDataSou
 
 extension SingleConditionViewController {
     
+    func setup_navigationBar() {
+        let blackAppereance = UINavigationBarAppearance()
+        blackAppereance.backgroundColor = UIColor.black
+        navigationController?.navigationBar.standardAppearance = blackAppereance
+        navigationController?.navigationBar.scrollEdgeAppearance = blackAppereance
+        
+        navigationController?.navigationBar.tintColor = UIColor.white
+        
+        guard let safeForecast = model.currentForecast else { return }
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "\(dayOfWeek(from: safeForecast.date) ?? "")"
+        titleLabel.textColor = UIColor.white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        titleLabel.sizeToFit()
+        
+        navigationController?.navigationItem.titleView = titleLabel
+    }
+    
+    
+    func setup_view() {
+        view.backgroundColor = UIColor.black
+    }
+    
+    
     func setup_conditionTB() {
         view.addSubview(conditionTB)
         
@@ -113,6 +128,7 @@ extension SingleConditionViewController {
             conditionTB.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
 }
 
 

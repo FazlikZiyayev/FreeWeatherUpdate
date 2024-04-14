@@ -34,7 +34,6 @@ class RootScreenViewModel: RootScreenViewModelProtocol {
     var currentForecastPublisher: Published<CurrentForecast?>.Publisher { $currentForecast }
     
     
-    
     func fetch_currentWeather() {
         let urlStr = "\(NetworkConstants.shared.baseUrl)/current.json?key=\(NetworkConstants.shared.apiKey)&q=Uzbekistan"
         guard let safeUrl = URL(string: urlStr) else { return }

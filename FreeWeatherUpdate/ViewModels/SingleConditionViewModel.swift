@@ -24,7 +24,6 @@ class SingleConditionViewModel: SingleConditionViewModelProtocol {
     var currentForecastPublisher: Published<ForecastDay?>.Publisher { $currentForecast }
     
     
-    
     func setCurrentForecast(forecast: ForecastDay?) {
         currentForecast = forecast
     }

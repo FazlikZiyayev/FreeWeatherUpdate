@@ -46,7 +46,6 @@ class RootScreenViewController: UIViewController {
         return tb
     }()
     
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +64,6 @@ class RootScreenViewController: UIViewController {
     }
     
     
-    
     func setup_uiComponents() {
         setup_countryNameLabel()
         setup_currentWeatherLabel()
@@ -77,7 +75,6 @@ class RootScreenViewController: UIViewController {
         bind_currentWeatherPublisher()
         bind_currentForecastPublisher()
     }
-    
     
     
     func bind_currentWeatherPublisher() {
