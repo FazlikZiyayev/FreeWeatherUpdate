@@ -18,7 +18,7 @@ class SingleConditionViewController: UIViewController {
     private lazy var conditionTB: UITableView = {
         let tb = UITableView()
         tb.translatesAutoresizingMaskIntoConstraints = false
-        tb.backgroundColor = UIColor.clear
+        tb.backgroundColor = UIColor.black
         tb.delegate = self
         tb.dataSource = self
         tb.register(ForecastCell.self, forCellReuseIdentifier: "ForecastCellIdentifier")
@@ -33,6 +33,15 @@ class SingleConditionViewController: UIViewController {
         
         self.view.backgroundColor = .black
         self.navigationController?.navigationBar.tintColor = UIColor.white
+        
+        guard let safeForecast = model.currentForecast else { return }
+        let titleLabel = UILabel()
+        titleLabel.text = "\(dayOfWeek(from: safeForecast.date) ?? "")"
+        titleLabel.textColor = UIColor.white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        titleLabel.sizeToFit()
+        
+        navigationItem.titleView = titleLabel
     }
     
     
@@ -41,11 +50,6 @@ class SingleConditionViewController: UIViewController {
         
         setup_conditionTB()
         bind_currentForecast()
-    }
-    
-    
-    func setCurrentForecast(forecast: CurrentForecast) {
-        model.setCurrentForecast(forecast: forecast)
     }
     
     
@@ -73,14 +77,21 @@ extension SingleConditionViewController: UITableViewDelegate, UITableViewDataSou
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        4
+        guard let safeForecast = model.currentForecast else { return 0 }
+
+        return safeForecast.hours.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastCellIdentifier",
                                                     for: indexPath) as? ForecastCell {
-            cell.configure(withTitle: "Hello")
+            guard let safeForecast = model.currentForecast else { return UITableViewCell() }
+            
+            let currenObj = safeForecast.hours[indexPath.row]
+            
+            cell.configure(withTitle: formatTimeToHour(currenObj.time) ?? "",
+                           withDesc: "\(Int(currenObj.currentTempC))°")
             
             return cell
         }
@@ -101,5 +112,47 @@ extension SingleConditionViewController {
             conditionTB.rightAnchor.constraint(equalTo: view.rightAnchor),
             conditionTB.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+}
+
+
+extension SingleConditionViewController {
+    
+    func setCurrentForecast(forecast: ForecastDay) {
+        model.setCurrentForecast(forecast: forecast)
+    }
+    
+    
+    func formatTimeToHour(_ dateString: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        
+        if let date = dateFormatter.date(from: dateString) {
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h a"
+            return timeFormatter.string(from: date)
+        } else {
+            return nil
+        }
+    }
+    
+    
+    func dayOfWeek(from dateString: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        guard let date = dateFormatter.date(from: dateString) else {
+            return nil
+        }
+        
+        let calendar = Calendar.current
+        
+        if calendar.isDateInToday(date) {
+            return "Today"
+        } else {
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            return dayFormatter.string(from: date)
+        }
     }
 }

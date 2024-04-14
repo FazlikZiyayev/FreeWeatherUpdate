@@ -34,6 +34,7 @@ class RootScreenViewModel: RootScreenViewModelProtocol {
     var currentForecastPublisher: Published<CurrentForecast?>.Publisher { $currentForecast }
     
     
+    
     func fetch_currentWeather() {
         let urlStr = "\(NetworkConstants.shared.baseUrl)/current.json?key=\(NetworkConstants.shared.apiKey)&q=Uzbekistan"
         guard let safeUrl = URL(string: urlStr) else { return }
@@ -73,7 +74,6 @@ class RootScreenViewModel: RootScreenViewModelProtocol {
     }
     
     
-    
     func fetch_forecastWeather() {
         let urlStr = "\(NetworkConstants.shared.baseUrl)/forecast.json?key=\(NetworkConstants.shared.apiKey)&q=Uzbekistan&days=10"
         guard let safeUrl = URL(string: urlStr) else { return }
@@ -105,8 +105,6 @@ class RootScreenViewModel: RootScreenViewModelProtocol {
             } receiveValue: { [weak self] forecast in
                 self?.currentForecast = forecast
             }
-            .store(in: &cancellables)
-
-        
+            .store(in: &cancellables)        
     }
 }

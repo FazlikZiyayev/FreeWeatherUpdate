@@ -11,21 +11,21 @@ import Combine
 
 protocol SingleConditionViewModelProtocol {
     
-    var currentForecast: CurrentForecast? { get }
-    var currentForecastPublisher: Published<CurrentForecast?>.Publisher { get }
+    var currentForecast: ForecastDay? { get }
+    var currentForecastPublisher: Published<ForecastDay?>.Publisher { get }
     
-    func setCurrentForecast(forecast: CurrentForecast?)
+    func setCurrentForecast(forecast: ForecastDay?)
 }
 
 
 class SingleConditionViewModel: SingleConditionViewModelProtocol {
     
-    @Published var currentForecast: CurrentForecast? = nil
-    var currentForecastPublisher: Published<CurrentForecast?>.Publisher { $currentForecast }
+    @Published var currentForecast: ForecastDay? = nil
+    var currentForecastPublisher: Published<ForecastDay?>.Publisher { $currentForecast }
     
     
     
-    func setCurrentForecast(forecast: CurrentForecast?) {
+    func setCurrentForecast(forecast: ForecastDay?) {
         currentForecast = forecast
     }
 }

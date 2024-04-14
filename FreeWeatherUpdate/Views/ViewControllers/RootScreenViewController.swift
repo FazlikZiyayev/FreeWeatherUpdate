@@ -118,7 +118,7 @@ extension RootScreenViewController: UITableViewDelegate, UITableViewDataSource {
         if let safeForecast = model.currentForecast
         {
             let vc = SingleConditionViewController()
-            vc.setCurrentForecast(forecast: safeForecast)
+            vc.setCurrentForecast(forecast: safeForecast.forecast.forecastDays[indexPath.row])
             
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -131,18 +131,22 @@ extension RootScreenViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.currentForecast?.forecast.forecastDays.count ?? 0
+        guard let safeForecast = model.currentForecast else { return 0 }
+        
+        return safeForecast.forecast.forecastDays.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastCellIdentifier",
                                                     for: indexPath) as? ForecastCell {
-            if let safeForecast = model.currentForecast
-            {
-                let str = safeForecast.forecast.forecastDays[indexPath.row].date
-                cell.configure(withTitle: dayOfWeek(from: str) ?? str)
-            }
+            
+            guard let safeForecast = model.currentForecast else { return UITableViewCell() }
+            
+            let str = safeForecast.forecast.forecastDays[indexPath.row].date
+            cell.configure(withTitle: dayOfWeek(from: str) ?? str,
+                           withDesc: "\(Int(safeForecast.forecast.forecastDays[indexPath.row].day.avgTempC))°")
+            
             
             return cell
         }
@@ -153,6 +157,7 @@ extension RootScreenViewController: UITableViewDelegate, UITableViewDataSource {
 
 
 extension RootScreenViewController {
+    
     func setup_countryNameLabel() {
         view.addSubview(countryNameLabel)
         
