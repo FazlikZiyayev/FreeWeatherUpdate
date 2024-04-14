@@ -94,25 +94,21 @@ extension SingleConditionViewController: UITableViewDelegate, UITableViewDataSou
 extension SingleConditionViewController {
     
     func setup_navigationBar() {
+        navigationController?.navigationBar.tintColor = UIColor.white
+
         let blackAppereance = UINavigationBarAppearance()
         blackAppereance.backgroundColor = UIColor.black
         navigationController?.navigationBar.standardAppearance = blackAppereance
         navigationController?.navigationBar.scrollEdgeAppearance = blackAppereance
-        
-        navigationController?.navigationBar.tintColor = UIColor.white
-        
+
         guard let safeForecast = model.currentForecast else { return }
-        
         let titleLabel = UILabel()
-//        titleLabel.text = "\(dayOfWeek(from: safeForecast.date) ?? "")"
-        titleLabel.text = "Hello"
+        titleLabel.text = "\(dayOfWeek(from: safeForecast.date) ?? "")"
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.sizeToFit()
         
-        navigationController?.navigationItem.titleView = titleLabel
-        
-        title = "Heeee"
+        navigationItem.titleView = titleLabel
     }
     
     
