@@ -12,7 +12,6 @@ class ForecastCell: UITableViewCell {
     
     var titleLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.clear
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20)
         label.textColor = UIColor.white
@@ -23,8 +22,6 @@ class ForecastCell: UITableViewCell {
     
     var rightLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello"
-        label.backgroundColor = UIColor.clear
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20)
         label.textColor = UIColor.white
